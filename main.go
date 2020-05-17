@@ -72,14 +72,14 @@ func tree(root, indent string) error {
 			continue
 		}
 
-		add := "| "
+		add := "￨ "
 
 		if i == len(fis)-1 {
-			fmt.Printf(indent + "↳")
+			fmt.Printf(indent + "|__")
 			add = " "
 
 		} else {
-			fmt.Printf(indent + "|--")
+			fmt.Printf(indent + "￨--")
 
 		}
 
