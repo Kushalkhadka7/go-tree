@@ -1,0 +1,78 @@
+name: Covid Client
+
+on:
+  push:
+    branches:
+      - master
+      - dev
+    paths:
+      - 'client/**'
+
+defaults:
+  run:
+    working-directory: './client'
+
+jobs:
+  Install:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - run: go version
+
+  Install-Dependencies:
+    needs: Install
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install Dependencies.
+        run: |
+          export GO111MODULE=on
+          ls
+          go list -m all
+          go mod vendor
+          go mod download
+
+  Format:
+    needs: [Install, Install-Dependencies]
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Format code
+        run: |
+          #
+          # Format code.
+          gofmt -d .
+          gofmt -l -s -w .
+
+  Build:
+    needs: [Install, Install-Dependencies]
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build app binary
+        run: |
+          #
+          # Run all unit tests.
+          go build .
+
+  Run:
+    needs: [Install, Install-Dependencies]
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install go binary.
+        run: |
+          go install
