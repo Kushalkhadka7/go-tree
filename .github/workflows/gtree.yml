@@ -1,4 +1,4 @@
-name: Covid Client
+name: gtree
 
 on:
   push:
