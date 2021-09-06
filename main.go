@@ -18,25 +18,6 @@ var (
 	infoColor *color.Color = color.New(color.FgBlue)
 )
 
-func main() {
-
-	args := []string{"."}
-
-	if len(os.Args) > 1 {
-		args = os.Args[1:]
-	}
-
-	for _, arg := range args {
-		err := tree(arg, "")
-
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-
-	infoColor.Printf("%v diresctories / %v files", dir, file)
-}
-
 func tree(root, indent string) error {
 
 	fi, err := os.Stat(root)
@@ -89,4 +70,23 @@ func tree(root, indent string) error {
 	}
 
 	return nil
+}
+
+func main() {
+
+	args := []string{"."}
+
+	if len(os.Args) > 1 {
+		args = os.Args[1:]
+	}
+
+	for _, arg := range args {
+		err := tree(arg, "")
+
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	infoColor.Printf("%v diresctories / %v files", dir, file)
 }
