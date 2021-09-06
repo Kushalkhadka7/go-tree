@@ -20,34 +20,34 @@ var (
 
 func tree(root, indent string) error {
 
-	fi, err := os.Stat(root)
+	s, err := os.Stat(root)
 
 	if err != nil {
-		return fmt.Errorf("nothing found")
+		return fmt.Errorf("no dir or files found")
 	}
 
-	if fi.IsDir() {
-		dirColor.Println(fi.Name())
+	if s.IsDir() {
+		dirColor.Println(s.Name())
 
 		dir++
 	} else {
 
-		fileColor.Println(fi.Name())
+		fileColor.Println(s.Name())
 
 		file++
 	}
 
-	if !fi.IsDir() {
+	if !s.IsDir() {
 		return nil
 	}
 
-	fis, err := ioutil.ReadDir(root)
+	dir, err := ioutil.ReadDir(root)
 
 	if err != nil {
 		return fmt.Errorf("could not read directory")
 	}
 
-	for i, fi := range fis {
+	for i, fi := range dir {
 
 		if fi.Name()[0] == '.' {
 			continue
@@ -55,7 +55,7 @@ func tree(root, indent string) error {
 
 		add := "￨ "
 
-		if i == len(fis)-1 {
+		if i == len(dir)-1 {
 			fmt.Printf(indent + "|__")
 			add = " "
 
@@ -85,6 +85,7 @@ func main() {
 
 		if err != nil {
 			log.Fatal(err)
+			os.Exit(1)
 		}
 	}
 
